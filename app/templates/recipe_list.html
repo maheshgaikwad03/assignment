@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe List</title>
+    <style>
+        .new-recipe {
+            background-color: lightgreen;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+     <a href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+    <h1>Recipes</h1>
+    <ul>
+        {% for recipe in recipes %}
+            <li class="{% if recipe.id == new_recipe_id %}new-recipe{% endif %}">
+                <h2>{{ recipe.title }}</h2>
+                <p><strong>Description:</strong> {{ recipe.description }}</p>
+                <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+                <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+                <p><strong>Date Posted:</strong> {{ recipe.date_posted.strftime('%Y-%m-%d') }}</p>
+                <p><strong>Created By:</strong> {{ recipe.author.username }}</p>
+
+                <!-- Example edit and delete links (adjust URLs and styling as needed) -->
+                <p>
+                    <a href="{{ url_for('update_recipe', recipe_id=recipe.id) }}">Edit</a>
+                    |
+                    <form method="post" action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-link">Delete</button>
+                    </form>
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div>
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('home', page=pagination.prev_num) }}">Previous</a>
+        {% endif %}
+        <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+        {% if pagination.has_next %}
+            <a href="{{ url_for('home', page=pagination.next_num) }}">Next</a>
+        {% endif %}
+    </div>
+
+    <!-- Redirect link to dashboard -->
+
+</body>
+</html>

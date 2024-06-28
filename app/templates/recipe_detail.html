@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>{{ recipe.title }}</h2>
+    <p>{{ recipe.description }}</p>
+    <p>{{ recipe.ingredients }}</p>
+    <p>{{ recipe.instructions }}</p>
+    {% if current_user == recipe.author %}
+        <a href="{{ url_for('update_recipe', recipe_id=recipe.id) }}">Edit</a>
+        <form action="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" method="POST" style="display:inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    {% endif %}
+{% endblock %}
